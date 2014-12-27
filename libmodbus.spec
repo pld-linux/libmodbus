@@ -1,15 +1,17 @@
 #
 # Conditional build:
+%bcond_without	static_libs	# static library
 #
-Summary:	libmodbus is a free software library to send/receive data according to the Modbus protocol
-Summary(pl.UTF-8):	libmodbus to darmowa biblioteka do wysyłania/odbierania danych zgodnie z protokołem Modbus
+Summary:	libmodbus - free software library to send/receive data according to the Modbus protocol
+Summary(pl.UTF-8):	libmodbus - darmowa biblioteka do wysyłania/odbierania danych zgodnie z protokołem Modbus
 Name:		libmodbus
-Version:	3.0.2
+# 3.0.x is stable, 3.1.x devel
+Version:	3.0.6
 Release:	1
 License:	LGPL v2.1+
 Group:		Libraries
-Source0:	http://github.com/downloads/stephane/libmodbus/%{name}-%{version}.tar.gz
-# Source0-md5:	1aaacce9d9779d3a84f7d1a75774c943
+Source0:	http://libmodbus.org/releases/%{name}-%{version}.tar.gz
+# Source0-md5:	c80f88b6ca19cabc4ceffc195ca07771
 URL:		http://www.libmodbus.org/
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
@@ -20,15 +22,14 @@ the Modbus protocol. This library is written in C and supports RTU
 
 %description -l pl.UTF-8
 libmodman to darmowa biblioteka do wysyłania/odbierania danych zgodnie
-z protokołem Modbus. Jest napisana w C i wspiera komunikacje RTU
-(porty szeregowe) i TCP (sieć ethernet)
+z protokołem Modbus. Jest napisana w C i wspiera komunikację RTU
+(porty szeregowe) i TCP (sieć Ethernet)
 
 %package devel
 Summary:	Header files for libmodbus library
 Summary(pl.UTF-8):	Pliki nagłówkowe biblioteki libmodbus
 Group:		Development/Libraries
 Requires:	%{name} = %{version}-%{release}
-Requires:	libstdc++-devel
 
 %description devel
 Header files for libmodbus library.
@@ -36,17 +37,30 @@ Header files for libmodbus library.
 %description devel -l pl.UTF-8
 Pliki nagłówkowe biblioteki libmodbus.
 
+%package static
+Summary:	Static libmodbus library
+Summary(pl.UTF-8):	Statyczna biblioteka libmodbus
+Group:		Development/Libraries
+Requires:	%{name}-devel = %{version}-%{release}
+
+%description static
+Static libmodbus library.
+
+%description static -l pl.UTF-8
+Statyczna biblioteka libmodbus.
+
 %prep
 %setup -q
 
 %build
-
 %{__libtoolize}
 %{__aclocal}
-%{__autoheader}
 %{__autoconf}
+%{__autoheader}
 %{__automake}
-%configure
+%configure \
+	--disable-silent-rules \
+	%{?with_static_libs:--enable-static}
 
 %{__make}
 
@@ -56,6 +70,9 @@ rm -rf $RPM_BUILD_ROOT
 %{__make} install \
 	DESTDIR=$RPM_BUILD_ROOT
 
+# obsoleted by pkg-config
+%{__rm} $RPM_BUILD_ROOT%{_libdir}/libmodbus.la
+
 %clean
 rm -rf $RPM_BUILD_ROOT
 
@@ -64,16 +81,20 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(644,root,root,755)
-%doc AUTHORS NEWS COPYING MIGRATION README.rst
+%doc AUTHORS MIGRATION NEWS README.rst TODO
 %attr(755,root,root) %{_libdir}/libmodbus.so.*.*.*
 %attr(755,root,root) %ghost %{_libdir}/libmodbus.so.5
-%{_mandir}/man3/modbus_*
-%{_mandir}/man7/libmodbus.7*
 
 %files devel
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/libmodbus.so
-%{_libdir}/libmodbus.la
-%dir %{_includedir}/modbus
-%{_includedir}/modbus/modbus*.h
+%{_includedir}/modbus
 %{_pkgconfigdir}/libmodbus.pc
+%{_mandir}/man3/modbus_*.3*
+%{_mandir}/man7/libmodbus.7*
+
+%if %{with static_libs}
+%files static
+%defattr(644,root,root,755)
+%{_libdir}/libmodbus.a
+%endif
