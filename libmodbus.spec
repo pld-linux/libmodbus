@@ -7,7 +7,7 @@ Summary(pl.UTF-8):	libmodbus - darmowa biblioteka do wysyłania/odbierania danyc
 Name:		libmodbus
 # 3.0.x is stable, 3.1.x devel
 Version:	3.0.6
-Release:	1
+Release:	2
 License:	LGPL v2.1+
 Group:		Libraries
 Source0:	http://libmodbus.org/releases/%{name}-%{version}.tar.gz
