@@ -6,12 +6,14 @@ Summary:	libmodbus - free software library to send/receive data according to the
 Summary(pl.UTF-8):	libmodbus - darmowa biblioteka do wysyłania/odbierania danych zgodnie z protokołem Modbus
 Name:		libmodbus
 # 3.0.x is stable, 3.1.x devel
-Version:	3.0.6
-Release:	2
+# This development version is very stable and will be marked as stable very soon
+# according to https://www.libmodbus.org/download
+Version:	3.1.7
+Release:	1
 License:	LGPL v2.1+
 Group:		Libraries
 Source0:	http://libmodbus.org/releases/%{name}-%{version}.tar.gz
-# Source0-md5:	c80f88b6ca19cabc4ceffc195ca07771
+# Source0-md5:	8b4299d49643a0edb57d40df4c8170c0
 URL:		http://www.libmodbus.org/
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
@@ -73,6 +75,8 @@ rm -rf $RPM_BUILD_ROOT
 # obsoleted by pkg-config
 %{__rm} $RPM_BUILD_ROOT%{_libdir}/libmodbus.la
 
+%{__rm} -r $RPM_BUILD_ROOT%{_docdir}/%{name}
+
 %clean
 rm -rf $RPM_BUILD_ROOT
 
@@ -81,7 +85,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(644,root,root,755)
-%doc AUTHORS MIGRATION NEWS README.rst TODO
+%doc AUTHORS MIGRATION NEWS README.md
 %attr(755,root,root) %{_libdir}/libmodbus.so.*.*.*
 %attr(755,root,root) %ghost %{_libdir}/libmodbus.so.5
 
