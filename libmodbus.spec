@@ -1,5 +1,6 @@
 #
 # Conditional build:
+%bcond_without	tests		# build without tests
 %bcond_without	static_libs	# static library
 #
 Summary:	libmodbus - free software library to send/receive data according to the Modbus protocol
@@ -8,13 +9,14 @@ Name:		libmodbus
 # 3.0.x is stable, 3.1.x devel
 # This development version is very stable and will be marked as stable very soon
 # according to https://www.libmodbus.org/download
-Version:	3.1.7
+Version:	3.1.10
 Release:	1
 License:	LGPL v2.1+
 Group:		Libraries
-Source0:	http://libmodbus.org/releases/%{name}-%{version}.tar.gz
-# Source0-md5:	8b4299d49643a0edb57d40df4c8170c0
-URL:		http://www.libmodbus.org/
+#		https://github.com/stephane/libmodbus/releases
+Source0:	https://github.com/stephane/libmodbus/archive/v%{version}/%{name}-%{version}.tar.gz
+# Source0-md5:	4ff4f54659695d7688ca9f4b70980821
+URL:		http://libmodbus.org/
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
@@ -66,6 +68,10 @@ Statyczna biblioteka libmodbus.
 
 %{__make}
 
+%if %{with tests}
+%{__make} check
+%endif
+
 %install
 rm -rf $RPM_BUILD_ROOT
 
@@ -85,7 +91,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(644,root,root,755)
-%doc AUTHORS MIGRATION NEWS README.md
+%doc AUTHORS NEWS README.md
 %attr(755,root,root) %{_libdir}/libmodbus.so.*.*.*
 %attr(755,root,root) %ghost %{_libdir}/libmodbus.so.5
 
@@ -94,8 +100,6 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_libdir}/libmodbus.so
 %{_includedir}/modbus
 %{_pkgconfigdir}/libmodbus.pc
-%{_mandir}/man3/modbus_*.3*
-%{_mandir}/man7/libmodbus.7*
 
 %if %{with static_libs}
 %files static
