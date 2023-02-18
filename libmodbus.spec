@@ -1,6 +1,6 @@
 #
 # Conditional build:
-%bcond_without	tests		# build without tests
+%bcond_without	tests		# testing
 %bcond_without	static_libs	# static library
 #
 Summary:	libmodbus - free software library to send/receive data according to the Modbus protocol
@@ -13,10 +13,13 @@ Version:	3.1.10
 Release:	1
 License:	LGPL v2.1+
 Group:		Libraries
-#		https://github.com/stephane/libmodbus/releases
+#Source0Download: https://github.com/stephane/libmodbus/releases
 Source0:	https://github.com/stephane/libmodbus/archive/v%{version}/%{name}-%{version}.tar.gz
 # Source0-md5:	4ff4f54659695d7688ca9f4b70980821
-URL:		http://libmodbus.org/
+URL:		https://libmodbus.org/
+BuildRequires:	autoconf >= 2.63
+BuildRequires:	automake >= 1:1.11
+BuildRequires:	libtool >= 2:2
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
@@ -26,8 +29,8 @@ the Modbus protocol. This library is written in C and supports RTU
 
 %description -l pl.UTF-8
 libmodman to darmowa biblioteka do wysyłania/odbierania danych zgodnie
-z protokołem Modbus. Jest napisana w C i wspiera komunikację RTU
-(porty szeregowe) i TCP (sieć Ethernet)
+z protokołem Modbus. Jest napisana w C i obsługuje komunikację RTU
+(porty szeregowe) i TCP (sieć Ethernet).
 
 %package devel
 Summary:	Header files for libmodbus library
