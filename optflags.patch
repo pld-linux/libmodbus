@@ -1,0 +1,18 @@
+diff -up libmodbus-3.1.11/configure.ac._orig libmodbus-3.1.11/configure.ac
+--- libmodbus-3.1.11/configure.ac._orig	2024-10-22 11:10:05.000000000 +0200
++++ libmodbus-3.1.11/configure.ac	2025-01-06 11:34:27.803181238 +0100
+@@ -178,14 +178,6 @@ AC_ARG_ENABLE([debug],
+   [enable_debug=$enableval],
+   [enable_debug=no])
+ 
+-AS_IF([test "x$enable_debug" = "xyes"], [
+-  CFLAGS="-g -O0"
+-  CXXFLAGS="-g -O0"
+-], [
+-  CFLAGS="-O2"
+-  CXXFLAGS="-O2"
+-])
+-
+ AC_OUTPUT
+ AC_MSG_RESULT([
+         $PACKAGE $VERSION

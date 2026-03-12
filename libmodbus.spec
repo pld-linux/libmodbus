@@ -9,13 +9,15 @@ Name:		libmodbus
 # 3.0.x is stable, 3.1.x devel
 # This development version is very stable and will be marked as stable very soon
 # according to https://www.libmodbus.org/download
-Version:	3.1.10
+Version:	3.1.12
 Release:	1
 License:	LGPL v2.1+
 Group:		Libraries
 #Source0Download: https://github.com/stephane/libmodbus/releases
 Source0:	https://github.com/stephane/libmodbus/archive/v%{version}/%{name}-%{version}.tar.gz
-# Source0-md5:	4ff4f54659695d7688ca9f4b70980821
+# Source0-md5:	24482d341203e048d4a7b7c15a417f53
+Patch0:		optflags.patch
+Patch1:		test.patch
 URL:		https://libmodbus.org/
 BuildRequires:	autoconf >= 2.63
 BuildRequires:	automake >= 1:1.11
@@ -59,6 +61,9 @@ Statyczna biblioteka libmodbus.
 %prep
 %setup -q
 
+%patch -P0 -p1
+%patch -P1 -p1
+
 %build
 %{__libtoolize}
 %{__aclocal}
@@ -94,7 +99,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(644,root,root,755)
-%doc AUTHORS NEWS README.md
+%doc AUTHORS NEWS.md README.md
 %attr(755,root,root) %{_libdir}/libmodbus.so.*.*.*
 %attr(755,root,root) %ghost %{_libdir}/libmodbus.so.5
 
